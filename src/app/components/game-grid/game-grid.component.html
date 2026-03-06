@@ -2,12 +2,21 @@
   <h1>Conway's Game of Life</h1>
 </header>
 <div class="controls">
+  <div class="zoom-control">
+    <label for="zoom">Zoom:</label>
+    <input id="zoom"
+           type="range"
+           min="3"
+           max="50"
+           [value]="game.cellSize()"
+           (input)="onZoomChange($event)" />
+    <span>{{ game.cellSize() }}px</span>
+  </div>
   <button class="button-start" [class.active]="isPlaying()" (click)="isPlaying.set(!isPlaying())">
     {{ isPlaying() ? 'Pause' : 'Start' }}
   </button>
   <button class="button-random" (click)="game.randomize()">Random</button>
   <button class="button-reset" (click)="game.reset()">Reset</button>
-
   <div class="stats">
     <span>Generationen: <strong>{{ generation() }}</strong></span>
     <span>Lebende Zellen: <strong>{{ game.activeCells() }}</strong></span>
@@ -16,13 +25,13 @@
 
 <div class="grid-viewport">
   <div class="grid"
-       [style.gridTemplateColumns]="'repeat(' + game.cols() + ', 20px)'"
-       [style.gridTemplateRows]="'repeat(' + game.rows() + ', 20px)'">
-
+       [style.gridTemplateColumns]="'repeat(' + game.cols() + ',' + game.cellSize() + 'px)'">
     @for (row of game.grid(); track rIdx; let rIdx = $index) {
     @for (cell of row; track cIdx; let cIdx = $index) {
     <div class="cell"
          [class.alive]="cell === 1"
+         [style.width.px]="game.cellSize()"
+         [style.height.px]="game.cellSize()"
          (click)="game.toggleCell(rIdx, cIdx)">
     </div>
     }

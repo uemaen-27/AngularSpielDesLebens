@@ -14,8 +14,6 @@
 }
 
 .cell {
-  width: 20px;
-  height: 20px;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: background-color 0.1s ease;
@@ -75,4 +73,20 @@ button {
 
 h1 {
     text-align: center;
+}
+
+.zoom-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 15px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.9rem;
+}
+
+input[type="range"] {
+  cursor: pointer;
+  accent-color: #00ff88;
 }

@@ -27,4 +27,9 @@ export class GameGridComponent {
       }
     });
   }
+
+  onZoomChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.game.changeZoom(Number(target.value));
+  }
 }

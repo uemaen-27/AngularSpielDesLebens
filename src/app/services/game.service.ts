@@ -2,7 +2,7 @@ import { Injectable, signal, computed, HostListener } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
-  private readonly cellSize = 20;
+  readonly cellSize = signal<number>(20);
 
   readonly rows = signal<number>(0);
   readonly cols = signal<number>(0);
@@ -19,15 +19,22 @@ export class GameService {
   }
 
   updateDimensions() {
-    const newCols = Math.floor(window.innerWidth / this.cellSize - 8);
-    const newRows = Math.floor(window.innerHeight / this.cellSize - 12);
+    const size = this.cellSize();
+    const gap = 1;
 
+    const availableWidth = window.innerWidth - 40;
+    const availableHeight = window.innerHeight - 200;
+
+    const newCols = Math.floor(availableWidth / (size + gap));
+    const newRows = Math.floor(availableHeight / (size + gap));
+
+    if (newCols < 1 || newRows < 1) return;
     if (newCols === this.cols() && newRows === this.rows()) return;
 
     const oldGrid = this.grid();
     const newGrid = Array.from({ length: newRows }, (_, r) =>
       Array.from({ length: newCols }, (_, c) => {
-        return (oldGrid[r] && oldGrid[r][c]) ? oldGrid[r][c] : 0;
+        return oldGrid[r]?.[c] ?? 0;
       })
     );
 
@@ -96,5 +103,8 @@ export class GameService {
     return count;
   }
 
-
+  changeZoom(newSize: number) {
+    this.cellSize.set(newSize);
+    this.updateDimensions();
+  }
 }
