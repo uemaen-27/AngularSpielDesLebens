@@ -1,0 +1,27 @@
+<header>
+  <h1>Conway's Game of Life mit Signals, Computed & Effect</h1>
+</header>
+<div class="controls">
+  <button class="button-start" (click)="isPlaying.set(!isPlaying())">
+    {{ isPlaying() ? 'Pause' : 'Start' }}
+  </button>
+  <button class="button-random" (click)="game.randomize()">Random</button>
+  <span>Generationen: {{ generation() }}</span>
+  <span>Lebende Zellen: {{ game.activeCells() }}</span>
+</div>
+
+<div class="grid"
+     [style.display]="'grid'"
+     [style.gridTemplateColumns]="'repeat(' + game.cols() + ', 20px)'">
+
+  @for (row of game.grid(); track rIdx; let rIdx = $index) {
+  @for (cell of row; track cIdx; let cIdx = $index) {
+  <div class="cell"
+       [class.alive]="cell === 1"
+       [style.width.px]="20"
+       [style.height.px]="20"
+       (click)="game.toggleCell(rIdx, cIdx)">
+  </div>
+  }
+  }
+</div>

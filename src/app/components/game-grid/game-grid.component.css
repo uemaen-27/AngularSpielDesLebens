@@ -1,0 +1,66 @@
+.grid {
+  display: grid;
+  gap: 1px;
+  background: #333;
+  border: 2px solid #333;
+  width: max-content;
+}
+
+.cell {
+  width: 20px;
+  height: 20px;
+  background: #1a1a1a;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+  .cell.alive {
+    background: #00ff88;
+    box-shadow: 0 0 8px #00ff88;
+  }
+
+.controls {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  color: #eee;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border: 2px solid #00ff88;
+  border-radius: 4px;
+  background: transparent;
+  color: #00ff88;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+  button:hover {
+    background: #00ff88;
+    color: #1a1a1a;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+  }
+
+  button:active {
+    transform: scale(0.95);
+  }
+
+.button-start {
+  min-width: 100px;
+}
+
+.controls span {
+  font-variant-numeric: tabular-nums;
+  background: #222;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  border-left: 3px solid #00ff88;
+}

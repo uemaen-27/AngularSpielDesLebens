@@ -1,18 +1,38 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, HostListener } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
-  readonly rows = 30;
-  readonly cols = 30;
+  private readonly cellSize = 20;
 
-  grid = signal<number[][]>(this.createEmptyGrid());
+  readonly rows = signal<number>(0);
+  readonly cols = signal<number>(0);
+
+  grid = signal<number[][]>([]);
 
   activeCells = computed(() =>
     this.grid().flat().reduce((acc, curr) => acc + curr, 0)
   );
 
-  private createEmptyGrid() {
-    return Array(this.rows).fill(0).map(() => Array(this.cols).fill(0));
+  constructor() {
+    this.updateDimensions();
+  }
+
+  updateDimensions() {
+    const newCols = Math.floor(window.innerWidth / this.cellSize - 8);
+    const newRows = Math.floor(window.innerHeight / this.cellSize - 12);
+
+    this.cols.set(newCols);
+    this.rows.set(newRows);
+
+    this.grid.set(this.createEmptyGrid(newRows, newCols));
+  }
+
+  private createEmptyGrid(r: number, c: number): number[][] {
+    if (r <= 0 || c <= 0) return [];
+
+    return Array.from({ length: r }, () =>
+      Array.from({ length: c }, () => 0)
+    );
   }
 
   randomize() {
@@ -23,6 +43,8 @@ export class GameService {
 
   toggleCell(r: number, c: number) {
     this.grid.update(oldGrid => {
+
+      if (!oldGrid[r]) return oldGrid;
       const newGrid = oldGrid.map(row => [...row]);
       newGrid[r][c] = newGrid[r][c] ? 0 : 1;
       return newGrid;
@@ -30,10 +52,13 @@ export class GameService {
   }
 
   nextGeneration() {
+    const rCount = this.rows();
+    const cCount = this.cols();
+
     this.grid.update(currentGrid => {
       return currentGrid.map((row, r) =>
         row.map((cell, c) => {
-          const neighbors = this.countNeighbors(currentGrid, r, c);
+          const neighbors = this.countNeighbors(currentGrid, r, c, rCount, cCount);
           if (cell === 1 && (neighbors < 2 || neighbors > 3)) return 0;
           if (cell === 0 && neighbors === 3) return 1;
           return cell;
@@ -42,13 +67,13 @@ export class GameService {
     });
   }
 
-  private countNeighbors(grid: number[][], r: number, c: number): number {
+  private countNeighbors(grid: number[][], r: number, c: number, maxR: number, maxC: number): number {
     let count = 0;
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
         if (i === 0 && j === 0) continue;
-        const x = (r + i + this.rows) % this.rows;
-        const y = (c + j + this.cols) % this.cols;
+        const x = (r + i + maxR) % maxR;
+        const y = (c + j + maxC) % maxC;
         count += grid[x][y];
       }
     }
