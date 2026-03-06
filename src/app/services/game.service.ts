@@ -15,16 +15,25 @@ export class GameService {
 
   constructor() {
     this.updateDimensions();
+    window.addEventListener('resize', () => this.updateDimensions());
   }
 
   updateDimensions() {
     const newCols = Math.floor(window.innerWidth / this.cellSize - 8);
     const newRows = Math.floor(window.innerHeight / this.cellSize - 12);
 
+    if (newCols === this.cols() && newRows === this.rows()) return;
+
+    const oldGrid = this.grid();
+    const newGrid = Array.from({ length: newRows }, (_, r) =>
+      Array.from({ length: newCols }, (_, c) => {
+        return (oldGrid[r] && oldGrid[r][c]) ? oldGrid[r][c] : 0;
+      })
+    );
+
     this.cols.set(newCols);
     this.rows.set(newRows);
-
-    this.grid.set(this.createEmptyGrid(newRows, newCols));
+    this.grid.set(newGrid);
   }
 
   private createEmptyGrid(r: number, c: number): number[][] {
@@ -33,6 +42,13 @@ export class GameService {
     return Array.from({ length: r }, () =>
       Array.from({ length: c }, () => 0)
     );
+  }
+
+  reset() {
+    const emptyGrid = Array.from({ length: this.rows() }, () =>
+      Array.from({ length: this.cols() }, () => 0)
+    );
+    this.grid.set(emptyGrid);
   }
 
   randomize() {
@@ -79,4 +95,6 @@ export class GameService {
     }
     return count;
   }
+
+
 }

@@ -1,31 +1,39 @@
+.grid-viewport {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  overflow: auto;
+}
+
 .grid {
   display: grid;
   gap: 1px;
-  background: #333;
-  border: 2px solid #333;
-  width: max-content;
+  background-color: #333;
+  border: 1px solid #333;
 }
 
 .cell {
   width: 20px;
   height: 20px;
-  background: #1a1a1a;
+  background-color: #1a1a1a;
   cursor: pointer;
-  transition: background 0.1s ease;
+  transition: background-color 0.1s ease;
 }
 
-  .cell.alive {
-    background: #00ff88;
-    box-shadow: 0 0 8px #00ff88;
-  }
+.cell.alive {
+  background-color: #00ff88;
+  box-shadow: 0 0 4px #00ff88;
+}
 
 .controls {
-  margin-bottom: 1.5rem;
   display: flex;
-  gap: 1rem;
+  gap: 15px;
   align-items: center;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  color: #eee;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  text-align:center;
 }
 
 button {
@@ -63,4 +71,8 @@ button {
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
   border-left: 3px solid #00ff88;
+}
+
+h1 {
+    text-align: center;
 }
