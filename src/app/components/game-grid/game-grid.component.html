@@ -2,6 +2,18 @@
   <h1>Conway's Game of Life</h1>
 </header>
 <div class="controls">
+  <div class="speed-control">
+    <label for="speed">Geschwindigkeit:</label>
+    <input id="speed"
+           type="range"
+           min="50"
+           max="5000"
+           step="50"
+           [value]="game.speed()"
+           (input)="onSpeedChange($event)"
+           />
+    <span>{{ game.speed() }}ms</span>
+  </div>
   <div class="zoom-control">
     <label for="zoom">Zoom:</label>
     <input id="zoom"

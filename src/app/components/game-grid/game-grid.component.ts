@@ -13,7 +13,6 @@ export class GameGridComponent {
 
   isPlaying = signal(false);
   generation = signal(0);
-  speed = signal(200);
 
   constructor() {
     effect((onCleanup) => {
@@ -21,7 +20,7 @@ export class GameGridComponent {
         const interval = setInterval(() => {
           this.game.nextGeneration();
           this.generation.update(g => g + 1);
-        }, this.speed());
+        }, this.game.speed());
 
         onCleanup(() => clearInterval(interval));
       }
@@ -31,5 +30,10 @@ export class GameGridComponent {
   onZoomChange(event: Event) {
     const target = event.target as HTMLInputElement;
     this.game.changeZoom(Number(target.value));
+  }
+
+  onSpeedChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.game.setSpeed(Number(target.value));
   }
 }

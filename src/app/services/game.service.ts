@@ -7,6 +7,8 @@ export class GameService {
   readonly rows = signal<number>(0);
   readonly cols = signal<number>(0);
 
+  readonly speed = signal<number>(200);
+
   grid = signal<number[][]>([]);
 
   activeCells = computed(() =>
@@ -106,5 +108,9 @@ export class GameService {
   changeZoom(newSize: number) {
     this.cellSize.set(newSize);
     this.updateDimensions();
+  }
+
+  setSpeed(newSpeed: number) {
+    this.speed.set(newSpeed);
   }
 }
